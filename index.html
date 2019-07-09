@@ -45,6 +45,8 @@
         <v-container fluid fill-height v-show="loading">
             <v-layout align-center justify-center>
                 <v-progress-circular :rotate="360" :size="100" :width="15" :value="progress" color="teal">
+                    {{ progress }}
+                </v-progress-circular>
             </v-layout>
         </v-container>
         <template>
