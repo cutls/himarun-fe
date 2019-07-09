@@ -1,64 +1,73 @@
 const app = new Vue({
     el: '#app',
     data: {
-        loading:true,
+        loading: true,
         date: 'today',
         showFood: false,
+        progress: 0,
         data: [],
     },
     methods: {
-        window: onload = function() {
-			get()
+        window: onload = function () {
+            get()
         },
-        change: function() {
-            app.loading=true;
-            if(app.date=="today"){
-                var start = "https://astarte.thedesk.top/himarun.php?date=yesterday";
-                app.date="yesterday"
-            }else{
-                var start = "https://astarte.thedesk.top/himarun.php";
-                app.date="today"
+        change: function () {
+            app.loading = true;
+            if (app.date == "today") {
+                var start = "https://astarte.thedesk.top/himarun.php?date=yesterday"
+                app.date = "yesterday"
+            } else {
+                var start = "https://astarte.thedesk.top/himarun.php"
+                app.date = "today"
             }
-            
-			var httpreq = new XMLHttpRequest();
-			httpreq.open('GET', start, true);
-			httpreq.setRequestHeader('Content-Type', 'application/json');
-			httpreq.responseType = 'json';
-			httpreq.send();
-			httpreq.onreadystatechange = function() {
-				if (httpreq.readyState == 4) {
-					var json = httpreq.response;
-                    console.log(json);
-                    app.data=json;
+
+            var httpreq = new XMLHttpRequest()
+            httpreq.open('GET', start, true)
+            httpreq.setRequestHeader('Content-Type', 'application/json')
+            httpreq.responseType = 'json'
+            httpreq.send();
+            httpreq.onprogress = function (evt) {
+                var load = (100 * evt.loaded / evt.total | 0)
+                app.progress = load
+            };
+            httpreq.onreadystatechange = function () {
+                if (httpreq.readyState == 4) {
+                    var json = httpreq.response
+                    console.log(json)
+                    app.data = json
                     drawTopChart()
                     drawSPChart()
                     drawShareChart()
-                    app.loading=false;
-				}
-			}
+                    app.loading = false
+                }
+            }
         }
     }
 })
-function get(){
-    var start = "https://astarte.thedesk.top/himarun.php";
-			var httpreq = new XMLHttpRequest();
-			httpreq.open('GET', start, true);
-			httpreq.setRequestHeader('Content-Type', 'application/json');
-			httpreq.responseType = 'json';
-			httpreq.send();
-			httpreq.onreadystatechange = function() {
-				if (httpreq.readyState == 4) {
-					var json = httpreq.response;
-                    console.log(json);
-                    app.data=json;
-                    drawTopChart()
-                    drawSPChart()
-                    drawShareChart()
-                    app.loading=false;
-				}
-			}
+function get() {
+    var start = "https://astarte.thedesk.top/himarun.php"
+    var httpreq = new XMLHttpRequest()
+    httpreq.open('GET', start, true)
+    httpreq.setRequestHeader('Content-Type', 'application/json')
+    httpreq.responseType = 'json'
+    httpreq.send()
+    httpreq.onprogress = function (evt) {
+        var load = (100 * evt.loaded / evt.total | 0)
+        app.progress = load
+    };
+    httpreq.onreadystatechange = function () {
+        if (httpreq.readyState == 4) {
+            var json = httpreq.response
+            console.log(json)
+            app.data = json
+            drawTopChart()
+            drawSPChart()
+            drawShareChart()
+            app.loading = false
+        }
+    }
 }
-function drawTopChart(){
+function drawTopChart() {
     Highcharts.chart('astartebot', {
         chart: {
             type: 'line'
@@ -70,8 +79,8 @@ function drawTopChart(){
             text: ''
         },
         xAxis: {
-                    categories: ["0",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
-                },
+            categories: ["0", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+        },
         yAxis: {
             title: {
                 text: 'Toots'
@@ -92,11 +101,11 @@ function drawTopChart(){
         {
             name: 'Boosts',
             data: app.data.bt_chart
-        }	]
+        }]
     });
 }
-function drawSPChart(){
-    var chart=Highcharts.chart('special', {
+function drawSPChart() {
+    var chart = Highcharts.chart('special', {
         chart: {
             type: 'line'
         },
@@ -107,7 +116,7 @@ function drawSPChart(){
             text: 'スマホで見るという発想が間違い'
         },
         xAxis: {
-            categories: ["0",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+            categories: ["0", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
         },
         yAxis: {
             title: {
@@ -122,40 +131,40 @@ function drawSPChart(){
                 enableMouseTracking: true
             }
         },
-          series: app.data.special
+        series: app.data.special
     });
 }
-function drawShareChart(){
+function drawShareChart() {
     Highcharts.chart('tooter', {
         chart: {
-          plotBackgroundColor: null,
-          plotBorderWidth: null,
-          plotShadow: false,
-          type: 'pie'
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
         },
         title: {
-          text: 'Users Share on Astarte'
+            text: 'Users Share on Astarte'
         },
         tooltip: {
-          pointFormat: '<b>{point.y}</b>({point.percentage:.1f}%)'
+            pointFormat: '<b>{point.y}</b>({point.percentage:.1f}%)'
         },
         plotOptions: {
-          pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-              enabled: false,
-              format: '<b>{point.name}</b>:{point.y}({point.percentage:.1f}%)',
-              style: {
-                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-              }
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false,
+                    format: '<b>{point.name}</b>:{point.y}({point.percentage:.1f}%)',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
             }
-          }
         },
         series: [{
-          name: 'Share',
-          colorByPoint: true,
-          data: app.data.piedata
+            name: 'Share',
+            colorByPoint: true,
+            data: app.data.piedata
         }]
-      });
+    });
 }

@@ -23,108 +23,107 @@
     <title></title>
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <style>
-    .active{
-        color:red;
-    }
-    .theme--light.v-list .v-list__tile__sub-title{
-        color:black;
-    }
-    .foods {
-    object-fit: cover;
-    width: 100px;
-    height: 100px;
-    position: relative;
-}
+        .active {
+            color: red;
+        }
+
+        .theme--light.v-list .v-list__tile__sub-title {
+            color: black;
+        }
+
+        .foods {
+            object-fit: cover;
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
     </style>
 </head>
 
 <body>
     <div id="app" style="width:100vw; height:100vh; padding:10px;">
-            <v-container fluid fill-height v-show="loading">
-                    <v-layout align-center justify-center>
-                            <v-progress-circular
-                            :size="70"
-                            :width="7"
-                            color="purple"
-                            indeterminate
-                          ></v-progress-circular>
-                    </v-layout>
-                </v-container>
+        <v-container fluid fill-height v-show="loading">
+            <v-layout align-center justify-center>
+                <v-progress-circular :rotate="360" :size="100" :width="15" :value="progress" color="teal">
+            </v-layout>
+        </v-container>
         <template>
-        <h4>アスタルテ暇人ランキング</h4>
-        <v-btn large dark color="indigo" v-on:click="change()"><span v-if="date == 'today'">昨日</span><span
-                v-else>今日</span>のデータを見る</v-btn>
-        <div id="astartebot" class="charts"></div>
-        最高:{{data.max}}文字<br>
-        合計:{{data.total}}文字<br>
-        平均:{{data.ave}}文字<br>
-        ユニークユーザー数:{{data.user}}人<br>
-        計:{{data.toot}}トゥート<br>
-        ユーザーデータ(画像・名前)は今日0:00現在のものです<br>
-        「深夜」は1:00-5:59を指します。<br>
-        <template v-if="showFood">
-            Foods:
-            <template v-for="(images, i) in data.food">
-                <a :href="images.toot" target="_blank"><img :src="images.image" class="foods"></a>
-            </template>
+            <h4>アスタルテ暇人ランキング</h4>
+            <v-btn large dark color="indigo" v-on:click="change()"><span v-if="date == 'today'">昨日</span><span
+                    v-else>今日</span>のデータを見る</v-btn>
+            <div id="astartebot" class="charts"></div>
+            最高:{{data.max}}文字<br>
+            合計:{{data.total}}文字<br>
+            平均:{{data.ave}}文字<br>
+            ユニークユーザー数:{{data.user}}人<br>
+            計:{{data.toot}}トゥート<br>
+            ユーザーデータ(画像・名前)は今日0:00現在のものです<br>
+            「深夜」は1:00-5:59を指します。<br>
+            <div v-if="showFood">
+                <template v-for="(images, i) in data.food">
+                    <a :href="images.toot" target="_blank"><img :src="images.image" class="foods"></a>
+                </template>
+            </div>
+            <v-btn large dark color="indigo" v-on:click="if(showFood){showFood = false} else {showFood=true}">お食事を見る
+            </v-btn>
+            <v-list two-line>
+                <template v-for="(item, index) in data.data">
+                    <v-list-tile :key="item.title" avatar>
+                        <v-list-tile-avatar>
+                            <img :src="item.icon">
+                        </v-list-tile-avatar>
+                        <v-list-tile-content>
+                            <v-list-tile-title>{{ item.user }}</v-list-tile-title>
+                            <v-list-tile-sub-title class="text--primary">{{ item.toot }}トゥート(昨日比:
+                                <span
+                                    :class="{ active: item.plus }">{{item.yesterday}}</span>)[ブースト:{{item.boost}}/深夜:{{item.nocturne}}]
+                            </v-list-tile-sub-title>
+                            <v-list-tile-sub-title>
+                                {{ item.rank }}位(前日{{item.yestardayraank}})[1位:{{item.past[0]}}回/2位:{{item.past[1]}}回/3位:{{item.past[2]}}回]
+                            </v-list-tile-sub-title>
+                        </v-list-tile-content>
+
+                        <v-list-tile-action>
+
+                        </v-list-tile-action>
+
+                    </v-list-tile>
+                    <v-divider v-if="index + 1 < data.data.length" :key="index"></v-divider>
+                </template>
+            </v-list>
+            <div id="special" class="charts"></div>
+            <div id="tooter" class="charts"></div>
+            2018年2月8日より収集しています。また4月8日よりブーストやメンションに関してもカウントされます。<br>
+            非公開トゥートも対象です。(ただし、@AstarteBotにフォローされている場合のみ)<br>
+            収集データは以下の通りです。<br>
+            <ul>
+                <li>誰がトゥートしたか(スクリーンネーム/名前/アバター)</li>
+                <li>いつトゥートしたか(年、月、日、時、分、秒)</li>
+                <li>そのトゥートに画像があるかどうか(画像自体は保持しません)</li>
+                <li>そのトゥートの文字数</li>
+                <li>そのトゥートに特定の文字列が含まれているかどうか(文字列自体は保存しません)</li>
+                <li>そのトゥートがブーストであるかどうか</li>
+            </ul>
+            2019年1月28日以前のデータは保存されていません。(日々の全体トゥート数、ユーザー数を除く)<br>
+            上記のデータは全て開示されることがあります。また、収集を認めない場合、収集対象から外すことができます。
+            自分のアカウントをデータ収集対象から外すためには@AstarteBotをブロックしてください。<br>
+            ユーザーの情報はあなたが@AstarteBotから見えなくなった日の23:59までに破棄されます。<br>
+            ただしすでに保存された内容については削除されません。削除を希望する場合は<b>本人が</b>Cutls Pに連絡してください。<br>
+            本人外からの削除リクエストはkirishima.cloudのAdmin以外からは受け付けられません。<br>
+            このシステムは、kirishima.cloudのユーザーを対象とし、その規約等に準拠しているという前提の下提供されています。<br>
+            保存されているデータについての開示を求める場合はいつでも開発者にお知らせください。<br>
+            開示請求のあった時点までのデータをすべてCSV(UTF-8)で提供します。<br>
+            System Copyright: Cutls P 2018<br>
+            暇人ランキングはCroudia発祥の文化です。<br>
+            Croudiaはクローディア株式会社の登録商標です。
+
         </template>
-        <v-btn large dark color="indigo" v-on:click="if(showFood){showFood = false} else {showFood=true}">お食事を見る</v-btn>
-        <v-list two-line>
-            <template v-for="(item, index) in data.data">
-                <v-list-tile :key="item.title" avatar>
-                    <v-list-tile-avatar>
-                        <img :src="item.icon">
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                        <v-list-tile-title>{{ item.user }}</v-list-tile-title>
-                        <v-list-tile-sub-title class="text--primary">{{ item.toot }}トゥート(昨日比:
-                            <span :class="{ active: item.plus }">{{item.yesterday}}</span>)[ブースト:{{item.boost}}/深夜:{{item.nocturne}}]</v-list-tile-sub-title>
-                        <v-list-tile-sub-title>
-                            {{ item.rank }}位(前日{{item.yestardayraank}})[1位:{{item.past[0]}}回/2位:{{item.past[1]}}回/3位:{{item.past[2]}}回]
-                        </v-list-tile-sub-title>
-                    </v-list-tile-content>
-
-                    <v-list-tile-action>
-
-                    </v-list-tile-action>
-
-                </v-list-tile>
-                <v-divider v-if="index + 1 < data.data.length" :key="index"></v-divider>
-            </template>
-        </v-list>
-        <div id="special" class="charts"></div>
-        <div id="tooter" class="charts"></div>
-        2018年2月8日より収集しています。また4月8日よりブーストやメンションに関してもカウントされます。<br>
-        非公開トゥートも対象です。(ただし、@AstarteBotにフォローされている場合のみ)<br>
-        収集データは以下の通りです。<br>
-        <ul>
-            <li>誰がトゥートしたか(スクリーンネーム/名前/アバター)</li>
-            <li>いつトゥートしたか(年、月、日、時、分、秒)</li>
-            <li>そのトゥートに画像があるかどうか(画像自体は保持しません)</li>
-            <li>そのトゥートの文字数</li>
-            <li>そのトゥートに特定の文字列が含まれているかどうか(文字列自体は保存しません)</li>
-            <li>そのトゥートがブーストであるかどうか</li>
-        </ul>
-        2019年1月28日以前のデータは保存されていません。(日々の全体トゥート数、ユーザー数を除く)<br>
-        上記のデータは全て開示されることがあります。また、収集を認めない場合、収集対象から外すことができます。
-        自分のアカウントをデータ収集対象から外すためには@AstarteBotをブロックしてください。<br>
-        ユーザーの情報はあなたが@AstarteBotから見えなくなった日の23:59までに破棄されます。<br>
-        ただしすでに保存された内容については削除されません。削除を希望する場合は<b>本人が</b>Cutls Pに連絡してください。<br>
-        本人外からの削除リクエストはkirishima.cloudのAdmin以外からは受け付けられません。<br>
-        このシステムは、kirishima.cloudのユーザーを対象とし、その規約等に準拠しているという前提の下提供されています。<br>
-        保存されているデータについての開示を求める場合はいつでも開発者にお知らせください。<br>
-        開示請求のあった時点までのデータをすべてCSV(UTF-8)で提供します。<br>
-        System Copyright: Cutls P 2018<br>
-        暇人ランキングはCroudia発祥の文化です。<br>
-        Croudiaはクローディア株式会社の登録商標です。
-            
-    </template>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
     <script src="app.js"></script>
-    
+
 </body>
 
 </html>
