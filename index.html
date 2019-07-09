@@ -73,7 +73,7 @@
                             <img :src="item.icon">
                         </v-list-tile-avatar>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{ item.user }}</v-list-tile-title>
+                            <v-list-tile-title v-html="item.user"></v-list-tile-title>
                             <v-list-tile-sub-title class="text--primary">{{ item.toot }}トゥート(昨日比:
                                 <span
                                     :class="{ active: item.plus }">{{item.yesterday}}</span>)[ブースト:{{item.boost}}/深夜:{{item.nocturne}}]
