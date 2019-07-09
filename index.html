@@ -44,9 +44,8 @@
     <div id="app" style="width:100vw; height:100vh; padding:10px;">
         <v-container fluid fill-height v-show="loading">
             <v-layout align-center justify-center>
-                <v-progress-circular :rotate="360" :size="100" :width="15" :value="progress" color="teal">
-                    {{ progress }}
-                </v-progress-circular>
+                <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
+                この待ち時間が暇つぶし
             </v-layout>
         </v-container>
         <template>

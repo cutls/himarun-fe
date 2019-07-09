@@ -4,7 +4,6 @@ const app = new Vue({
         loading: true,
         date: 'today',
         showFood: false,
-        progress: 0,
         data: [],
     },
     methods: {
@@ -25,11 +24,7 @@ const app = new Vue({
             httpreq.open('GET', start, true)
             httpreq.setRequestHeader('Content-Type', 'application/json')
             httpreq.responseType = 'json'
-            httpreq.send();
-            httpreq.onprogress = function (evt) {
-                var load = (100 * evt.loaded / evt.total | 0)
-                app.progress = load
-            };
+            httpreq.send()
             httpreq.onreadystatechange = function () {
                 if (httpreq.readyState == 4) {
                     var json = httpreq.response
@@ -51,10 +46,6 @@ function get() {
     httpreq.setRequestHeader('Content-Type', 'application/json')
     httpreq.responseType = 'json'
     httpreq.send()
-    httpreq.onprogress = function (evt) {
-        var load = (100 * evt.loaded / evt.total | 0)
-        app.progress = load
-    };
     httpreq.onreadystatechange = function () {
         if (httpreq.readyState == 4) {
             var json = httpreq.response
