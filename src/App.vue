@@ -79,6 +79,31 @@
     <br />Croudiaはクローディア株式会社の登録商標です。
   </div>
 </template>
+<style>
+    .active {
+      color: red;
+    }
+
+    .theme--light.v-list .v-list__tile__sub-title {
+      color: black;
+    }
+
+    .foods {
+      object-fit: cover;
+      width: 100px;
+      height: 100px;
+      position: relative;
+    }
+
+    .emoji {
+      width: 1.3rem;
+    }
+
+    .container.fill-height {
+      position: fixed;
+      background-color: white;
+    }
+  </style>
 <script>
 import Vue from "vue";
 import Vuex from "vuex";
