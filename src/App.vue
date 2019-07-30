@@ -47,7 +47,11 @@
             <v-list-tile-sub-title>{{ item.rank }}位(前日{{item.yestardayraank}})[1位:{{item.past[0]}}回/2位:{{item.past[1]}}回/3位:{{item.past[2]}}回]</v-list-tile-sub-title>
           </v-list-tile-content>
 
-          <v-list-tile-action><a :href="item.url" target="_blank"><v-icon>link</v-icon></a></v-list-tile-action>
+          <v-list-tile-action>
+            <a :href="item.url" target="_blank">
+              <v-icon>link</v-icon>
+            </a>
+          </v-list-tile-action>
         </v-list-tile>
         <v-divider v-if="index + 1 < data.data.length" :key="index"></v-divider>
       </template>
@@ -80,36 +84,39 @@
   </div>
 </template>
 <style>
-    .active {
-      color: red;
-    }
+.active {
+  color: red;
+}
 
-    .theme--light.v-list .v-list__tile__sub-title {
-      color: black;
-    }
+.theme--light.v-list .v-list__tile__sub-title {
+  color: black;
+}
 
-    .foods {
-      object-fit: cover;
-      width: 100px;
-      height: 100px;
-      position: relative;
-    }
+.foods {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
 
-    .emoji {
-      width: 1.3rem;
-    }
+.emoji {
+  width: 1.3rem;
+}
 
-    .container.fill-height {
-      position: fixed;
-      background-color: white;
-      z-index:9999;
-    }
-  </style>
+.container.fill-height {
+  position: fixed;
+  background-color: white;
+  z-index: 9999;
+}
+a {
+  text-decoration: none;
+}
+</style>
 <script>
 import Vue from "vue";
 import Vuex from "vuex";
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
 Vue.use(Vuetify);
 Vue.use(Vuex);
 export default {
@@ -303,38 +310,42 @@ export default {
       });
     },
     drawShareChart: function(event) {
-      Highcharts.chart('tooter', {
-    chart: {
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: false,
-      type: 'pie'
-    },
-    title: {
-      text: 'Users Share on Astarte'
-    },
-    tooltip: {
-      pointFormat: '<b>{point.y}</b>({point.percentage:.1f}%)'
-    },
-    plotOptions: {
-      pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: {
-          enabled: false,
-          format: '<b>{point.name}</b>:{point.y}({point.percentage:.1f}%)',
-          style: {
-            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+      Highcharts.chart("tooter", {
+        chart: {
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false,
+          type: "pie"
+        },
+        title: {
+          text: "Users Share on Astarte"
+        },
+        tooltip: {
+          pointFormat: "<b>{point.y}</b>({point.percentage:.1f}%)"
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: "pointer",
+            dataLabels: {
+              enabled: false,
+              format: "<b>{point.name}</b>:{point.y}({point.percentage:.1f}%)",
+              style: {
+                color:
+                  (Highcharts.theme && Highcharts.theme.contrastTextColor) ||
+                  "black"
+              }
+            }
           }
-        }
-      }
-    },
-    series: [{
-      name: 'Share',
-      colorByPoint: true,
-      data: this.data.piedata
-    }]
-  });
+        },
+        series: [
+          {
+            name: "Share",
+            colorByPoint: true,
+            data: this.data.piedata
+          }
+        ]
+      });
     }
   }
 };
