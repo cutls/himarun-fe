@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div style="padding:10px">
     <v-container fluid fill-height v-show="loading">
       <v-layout align-center justify-center column>
         <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>Loading
       </v-layout>
     </v-container>
-    <h4>アスタルテ暇人ランキング</h4>
+    <h1>アスタルテ暇人ランキング</h1>
     <v-btn large dark color="indigo" v-on:click="change()">
       <span v-if="date == 'today'">昨日</span>
       <span v-else>今日</span>のデータを見る
@@ -107,8 +107,8 @@
 <script>
 import Vue from "vue";
 import Vuex from "vuex";
-import Vuetify from "vuetify";
-
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify);
 Vue.use(Vuex);
 export default {
