@@ -20,8 +20,8 @@
     ユニークユーザー数:{{data.user}}人
     <br />
     計:{{data.toot}}トゥート<br />
-    Public: {{data.visibility.public}} / Unlisted: {{data.visibility.unlisted}}<br />
-    Private: {{data.visibility.private}} / L限: {{data.visibility.local_only}}<br />
+    Public: {{data.public}} / Unlisted: {{data.unlisted}}<br />
+    Private: {{data.private}} / L限: {{data.local_only}}<br />
     <br />ユーザーデータ(画像・名前)は今日0:00現在のものです
     <br />「深夜」は1:00-5:59を指します。
     <br />
