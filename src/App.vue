@@ -19,7 +19,9 @@
     <br />
     ユニークユーザー数:{{data.user}}人
     <br />
-    計:{{data.toot}}トゥート
+    計:{{data.toot}}トゥート<br />
+    Public: {{data.visibility.public}} / Unlisted: {{data.visibility.unlisted}}<br />
+    Private: {{data.visibility.private}} / L限: {{data.visibility.local_only}}<br />
     <br />ユーザーデータ(画像・名前)は今日0:00現在のものです
     <br />「深夜」は1:00-5:59を指します。
     <br />
@@ -42,7 +44,7 @@
             <v-list-tile-sub-title class="text--primary">
               {{ item.toot }}トゥート(昨日比:
               <span :class="{ active: item.plus }">{{item.yesterday}}</span>
-              )[ブースト:{{item.boost}}/深夜:{{item.nocturne}}]
+              )[公開:{{item.public}}/ブースト:{{item.boost}}/深夜:{{item.nocturne}}]
             </v-list-tile-sub-title>
             <v-list-tile-sub-title>{{ item.rank }}位(前日{{item.yestardayraank}})[1位:{{item.past[0]}}回/2位:{{item.past[1]}}回/3位:{{item.past[2]}}回]</v-list-tile-sub-title>
           </v-list-tile-content>
